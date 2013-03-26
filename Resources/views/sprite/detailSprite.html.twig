@@ -1,0 +1,72 @@
+{% extends 'SphaxSpriteBundle::layout.html.twig' %}
+
+{% block titleSection %}Sprite {{ detailSprite.name }} pour le site {{ detailSprite.site.name }}{% endblock %}
+
+{% block content %}
+	<br />
+	
+	<form id="imgList" action="{{ path('deleteImage', { 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}" method="post">
+		<div>
+			<h2>Liste des images du sprite</h2>
+			<span id="showDeleteCheckbox">Supprimer les images</span>
+		</div>
+		<ul id="imgToSprite">
+		{% for imgSprite in imgListSprite %}
+		    <li>
+		    	<div class="image">
+		    		<img src="{{ asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/images/' ~ detailSprite.dossierImage|lower ~ '/' ~ imgSprite) }}" />
+		    	</div>
+		    	{% set infoImg = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/images/' ~ detailSprite.dossierImage|lower ~ '/' ~ imgSprite)) %}
+		    	<div class="infoImg">
+			    	<span><strong>width :</strong>{{ infoImg.width }}</span>
+			    	<span><strong>height :</strong>{{ infoImg.height }}</span>
+			    	<span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }}</span>
+			    </div>
+			    <input type="checkbox" name="deleteImage[]" value="{{ imgSprite }}" />
+		    </li>
+		    {% else %}
+		    Aucune image
+		{% endfor %}
+		</ul>
+		<input type="submit" name="btDelImage" id="btDelImage" value="Supprimer les images" />
+	</form>
+
+	{% if imgListSprite %}
+	<div id="spriteInfo" class="clearer">
+		<h2>Sprite informations</h2>
+		<div id="infoSprite">
+			{% if spriteGenerate == true %}
+				{% if detailSpriteConf.less == true %}
+					{% set infoCSS = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.less')) %}
+				{% else %}
+					{% set infoCSS = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.css')) %}
+				{% endif %}
+				{% set infoImg = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.png')) %}
+				
+				<img src="{{ asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.png') }}?{{ infoImg.size }}" />
+		    	<div class="spriteData">
+		    		<span><strong>width :</strong>{{ infoImg.width }}</span>
+			    	<span><strong>height :</strong>{{ infoImg.height }}</span>
+			    	<span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }} bytes</span>
+			    	<span><strong><abbr title="Bytes">CSS size</abbr> : </strong>{{ infoCSS.size }} bytes</span>
+			    </div>
+		    {% endif %}
+	    </div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+	<h4>Liste des fichiers :</h4>
+    <output id="list"></output>
+
+	<form id="form_image" method="post" action="{{ path('addImage', { 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}" enctype="multipart/form-data">
+		<input type="file" multiple=multiple name="imageSprite[]" />
+		<input type="submit" value="uploader vos images" />
+	</form>
+
+	<form id="form_gererate" method="post" action="{{ path('generateSprite', { 'id': detailSprite.id, 'idConf': detailSpriteConf.id, 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}">
+		{{ form_widget(form) }}
+		<input type="submit" value="Générer le sprite" />
+	</form>
+{% endblock %}

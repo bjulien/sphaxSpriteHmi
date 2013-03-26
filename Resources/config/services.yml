@@ -1,0 +1,13 @@
+parameters:
+
+services:
+    twig.extension.image_operation:
+        class: Sphax\SpriteBundle\Twig\Extension\ImageOperation
+        tags:
+            - { name: twig.extension }
+        arguments: [@kernel]
+    twig.extension.get_sprite_conf:
+        class: Sphax\SpriteBundle\Twig\Extension\GetSpriteConf
+        tags:
+            - { name: twig.extension }
+        arguments: [@service_container]

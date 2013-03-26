@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block titleSection %}Gestion des Sprites{% endblock %}
+
+{% block content %}
+    
+	<form id="uploadForm" action="#" method="post" {{ form_enctype(form) }}>
+	    {{ form_widget(form) }}
+	    <input type="submit" value="Creer un sprite" />
+	</form>
+
+{% endblock %}
+
+{% block sidebar %}
+	@todo
+{% endblock %}

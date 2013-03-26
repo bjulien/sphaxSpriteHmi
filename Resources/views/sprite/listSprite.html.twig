@@ -1,0 +1,45 @@
+{% extends 'SphaxSpriteBundle::layout.html.twig' %}
+
+{% block titleSection %}Gestion des Sprites{% endblock %}
+
+{% block content %}
+    
+	<table>
+		<thead>
+			<th>Sprite name
+			<th>outputCSS
+			<th>sourceSpriteImage
+			<th>Image dir
+			<th>Action 
+		</thead>
+		<tbody>
+			{% for sprite in listSprite %}
+				<tr>
+					<td>
+
+					<td>
+						{{ sprite.outputCSS }}
+					<td>
+						{{ sprite.sourceSpriteImage }}
+					<td>
+						{{ sprite.outputSpriteImage }}
+					<td>
+						{{ sprite.options.optipng }}
+						{{ sprite.options.cachebuster }}
+						{{ sprite.options.less }}
+						{{ sprite.options.namespace }}
+						{{ sprite.options.separator }}
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %}
+
+{% block titleSideBar %}Nouveau Sprite{% endblock %}
+
+{% block sidebar %}
+        <form id="uploadForm" action="{{ path('createSprite') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+            <input type="submit" value="Creer un sprite" />
+        </form>
+{% endblock %}

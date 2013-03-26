@@ -1,0 +1,3 @@
+Sprite:
+    pattern:  /
+    defaults: { _controller: SphaxSpriteIhm:Default:default }

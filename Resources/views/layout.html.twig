@@ -1,0 +1,9 @@
+{% extends '::base.html.twig' %}
+
+{% block titleSection %}Gestion des Sprites{% endblock %}
+
+{% block stylesheet %}
+    {% stylesheets '@SphaxSpriteBundleIHM/Resources/public/css/*' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+{% endblock %}
