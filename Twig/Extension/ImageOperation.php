@@ -1,5 +1,5 @@
 <?php
-namespace Sphax\SpriteBundleIHM\Twig\Extension;
+namespace Sphax\SpriteHmiBundle\Twig\Extension;
 
 class ImageOperation extends \Twig_Extension
 {

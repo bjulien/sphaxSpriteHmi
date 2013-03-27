@@ -1,5 +1,5 @@
 <?php
-namespace Sphax\SpriteBundleIHM\Twig\Extension;
+namespace Sphax\SpriteHmiBundle\Twig\Extension;
 
 use Sphax\SpriteBundle\Entity\SpriteConf;
 
