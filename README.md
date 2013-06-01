@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Sphax Sprite Bundle
 ==================
 Easily manage your sprites in your Symfony2 environment
@@ -89,3 +90,9 @@ Example :
     {% endstylesheets %}
 {% endblock %}
 ```
+=======
+sphaxSpriteHmi
+==============
+
+web interface
+>>>>>>> 26d313b75b990daf5c1c04aa2aff973c5cb675a4
