@@ -1,72 +1,138 @@
 {% extends 'SphaxSpriteHmiBundle::layout.html.twig' %}
 
-{% block titleSection %}Sprite {{ detailSprite.name }} pour le site {{ detailSprite.site.name }}{% endblock %}
+{% block titleSection %}{% endblock %}
 
 {% block content %}
-	<br />
-	
-	<form id="imgList" action="{{ path('deleteImage', { 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}" method="post">
-		<div>
-			<h2>Liste des images du sprite</h2>
-			<span id="showDeleteCheckbox">Supprimer les images</span>
-		</div>
-		<ul id="imgToSprite">
-		{% for imgSprite in imgListSprite %}
-		    <li>
-		    	<div class="image">
-		    		<img src="{{ asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/images/' ~ detailSprite.dossierImage|lower ~ '/' ~ imgSprite) }}" />
-		    	</div>
-		    	{% set infoImg = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/images/' ~ detailSprite.dossierImage|lower ~ '/' ~ imgSprite)) %}
-		    	<div class="infoImg">
-			    	<span><strong>width :</strong>{{ infoImg.width }}</span>
-			    	<span><strong>height :</strong>{{ infoImg.height }}</span>
-			    	<span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }}</span>
-			    </div>
-			    <input type="checkbox" name="deleteImage[]" value="{{ imgSprite }}" />
-		    </li>
-		    {% else %}
-		    Aucune image
-		{% endfor %}
-		</ul>
-		<input type="submit" name="btDelImage" id="btDelImage" value="Supprimer les images" />
-	</form>
 
-	{% if imgListSprite %}
-	<div id="spriteInfo" class="clearer">
-		<h2>Sprite informations</h2>
-		<div id="infoSprite">
-			{% if spriteGenerate == true %}
-				{% if detailSpriteConf.less == true %}
-					{% set infoCSS = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.less')) %}
-				{% else %}
-					{% set infoCSS = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.css')) %}
-				{% endif %}
-				{% set infoImg = getImageSize(asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.png')) %}
-				
-				<img src="{{ asset('bundles/' ~ detailSprite.site.name|lower ~ '' ~ dirAsset ~ '/sprites/' ~    detailSprite.dossierImage|lower ~ '.png') }}?{{ infoImg.size }}" />
-		    	<div class="spriteData">
-		    		<span><strong>width :</strong>{{ infoImg.width }}</span>
-			    	<span><strong>height :</strong>{{ infoImg.height }}</span>
-			    	<span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }} bytes</span>
-			    	<span><strong><abbr title="Bytes">CSS size</abbr> : </strong>{{ infoCSS.size }} bytes</span>
-			    </div>
-		    {% endif %}
-	    </div>
-	</div>
-	{% endif %}
+{% for flashMessage in app.session.flashbag.get('noticeSprite') %}
+    {% if flashMessage == false %}
+        <div class="alert alert-error">
+            Problem in sprite generation, please check permission in this folder : {{ detailInfo.outputSpriteImage }} or this folder doesn't exist.
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+          {{ flashMessage }}
+        </div>
+    {% endif %}
+{% endfor %}
+
+<div class="accordion" id="accordion2">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+            <h4>Sprites informations</h4>
+            </a>
+        </div>
+        <div id="collapseOne" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <div class="well well-small">
+                    <span>Sprites informations</span>
+                    <div>
+                        <strong>Folder image : </strong><span contenteditable>{{ detailInfo.sourceSpriteImage }}</span>
+                        <br />
+                        <strong>Output folder image : </strong><span contenteditable>{{ detailInfo.outputSpriteImage }}</span>
+                    </div>
+                </div>
+
+                <div class="well well-small">
+                    <span><i class="icon-folder-open"></i>Add images </span>
+                    <div>
+                        <form id="form-upload" method="post" action="{{ path('addImage') }}" enctype="multipart/form-data">
+                            <input type="file" multiple=multiple name="imageUpload[]" />
+                            <input type="hidden" name="dirImage" value="{{ detailInfo.sourceSpriteImage }}" />
+                            <input type="submit" class="btn" value="Upload" />
+                        </form>
+                    </div>
+                    <h5>Image to upload</h5>
+                    <output id="list"></output>
+
+                </div>
+            </div>
+        </div>
+    </div>
+      <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                <h4>Images in da sprite</h4>
+                </a>
+            </div>
+            <div id="collapseTwo" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <ul class="thumbnails" id="imgToSprite">
+                    {% for imgSprite in spriteDirImage %}
+                        <li>
+                            <div class="thumbnail">
+                                <img src="{{ image64(detailInfo.sourceSpriteImage ~ imgSprite) }}" alt="{{ imgSprite }}" title="{{ imgSprite }}" />
+                            </div>
+                            {% set infoImg = getImageSize(detailInfo.sourceSpriteImage ~ imgSprite) %}
+
+                            <div class="infoImg delImage">
+                                {#<span><strong>width :</strong>{{ infoImg.width }}</span>
+                                <span><strong>height :</strong>{{ infoImg.height }}</span>
+                                <span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }}</span>#}
+                                <a class="close" href="{{ path('delImage', {'spriteName': detailInfo.name, 'name': imgSprite}) }}"><span>&times;</span></a>
+                            </div>
+                            
+                        </li>
+                        {% else %}
+                        Aucune image
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+      </div>
+      {% if dirOutput %}
+      <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+                <h4>Sprite and css generate</h4>
+                </a>
+            </div>
+            <div id="collapseThree" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <ul class="thumbnails">
+                    {% for spriteCss in dirOutput %}
+                        <li>
+                            {% set infoImg = getImageSize(detailInfo.outputSpriteImage ~ spriteCss) %}
+                            <div class="thumbnail">
+                                <img src="{{ image64(detailInfo.outputSpriteImage ~ spriteCss) }}" alt="{{ spriteCss }}" title="{{ spriteCss }}" />
+                            </div>
+                            <div class="infoImg">
+                                <span><strong>width :</strong>{{ infoImg.width }}</span>
+                                <span><strong>height :</strong>{{ infoImg.height }}</span>
+                                <span><strong><abbr title="Bytes">size</abbr> : </strong>{{ infoImg.size }}</span>
+                            </div>
+                            
+                        </li>
+                        {% else %}
+                        Aucune image
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+      </div>
+      {% endif %}
+</div>
+    
 {% endblock %}
 
 {% block sidebar %}
-	<h4>Liste des fichiers :</h4>
-    <output id="list"></output>
+    <ul class="unstyled detailSprite">
+    {% for key, info in detailInfo %}
+        {% if key == 'options' %}
+            {% for key1, options in info %}
+                {% if options != '' %}
+                <li><span class="label label-success">{{ key1 }} : {{ options }}</span></li>
+                {% else %}
+                <li><span class="label label-important">{{ key1 }} : {{ options }}</span></li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    </ul>
+{% endblock %}
 
-	<form id="form_image" method="post" action="{{ path('addImage', { 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}" enctype="multipart/form-data">
-		<input type="file" multiple=multiple name="imageSprite[]" />
-		<input type="submit" value="uploader vos images" />
-	</form>
-
-	<form id="form_gererate" method="post" action="{{ path('generateSprite', { 'id': detailSprite.id, 'idConf': detailSpriteConf.id, 'bundle': detailSprite.bundle, 'dossierImage': detailSprite.dossierImage, 'site': detailSprite.site.name }) }}">
-		{{ form_widget(form) }}
-		<input type="submit" value="Générer le sprite" />
-	</form>
+{% block sidebarDetail %}
+<a href="{{ path('modifSprite', {'spriteName': detailInfo.name}) }}" class="btn btn-primary">Update</a>
+    <a href="{{ path('generateSprite', {'spriteName': detailInfo.name}) }}" class="btn btn-primary">Generate</a>
 {% endblock %}

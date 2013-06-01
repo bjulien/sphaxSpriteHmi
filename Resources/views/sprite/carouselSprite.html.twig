@@ -1,0 +1,266 @@
+<form id="uploadForm" class="form-horizontal" action="{{ path(action) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form._token) }}
+        <div id="myCarousel" class="carousel slide formStyle" data-interval="">
+            <div class="control-group">
+                <div class="formBlock">
+                  <!-- Carousel items -->
+                    <div class="carousel-inner">
+                        <div class="active item">
+                            <h3>Main Informations</h3>
+                            <div>
+                                {{ form_label(form.name) }}
+                                {{ form_widget(form.name, {value : detailInfo.name|default('')}) }}
+                            </div>
+                            <div>
+                                {{ form_label(form.nameBin) }}
+                                {{ form_widget(form.nameBin, {value : detailInfo.nameBin|default('')}) }}
+                            </div>
+                            <div>
+                                {{ form_label(form.sourceSpriteImage) }}
+                                {{ form_widget(form.sourceSpriteImage, {value : detailInfo.sourceSpriteImage|default('')}) }}
+                            </div>
+                            <div>
+                                {{ form_label(form.outputSpriteImage) }}
+                                {{ form_widget(form.outputSpriteImage, {value : detailInfo.outputSpriteImage|default('')}) }}
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h3>Options: Image Optimizer</h3>
+                            <div>
+                                {% if (detailInfo.options.optipng is defined) and (detailInfo.options.optipng == 1) %}
+                                    {{ form_widget(form.options.optipng, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.optipng) }}
+                                {% endif %}
+                                {{ form_label(form.options.optipng) }}
+                                <span>If you have optipng installed on your computer you can use the --optipng option to automatically optimize all the sprites that glue generates</span>
+                            </div>
+                            <div>
+                                {% if (detailInfo.options.imagemagick is defined) and (detailInfo.options.imagemagick == 1) %}
+                                    {{ form_widget(form.options.imagemagick, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.imagemagick) }}
+                                {% endif %}
+                                {{ form_label(form.options.imagemagick) }}
+                                <span>The option --imagemagick will make glue scale down your bigger sprite to the appropriate ratio size using ImageMagick instead of Pillow. In some situations Pillow scaling algorithm perform really bad and it generates some horrible shades / gray borders.</span>
+                            </div>
+                            <div>
+                                {% if (detailInfo.options.png8 is defined) and (detailInfo.options.png8 == 1) %}
+                                    {{ form_widget(form.options.png8, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.png8) }}
+                                {% endif %}
+                                {{ form_label(form.options.png8) }}
+                                <span>By using the flag png8 the output image format will be png8 instead of png32.</span>
+                            </div>
+                            <div>
+                                {{ form_label(form.options.optipngpath) }}
+                                {{ form_widget(form.options.optipngpath, {value : detailInfo.options.optipngpath|default('')}) }}
+                                <span>If optipng is not in your computer PATH, you can choose the optipng path using this option.</span>
+                            </div>
+                            <div>
+                                {{ form_label(form.options.imagemagickpath) }}
+                                {{ form_widget(form.options.imagemagickpath, {value : detailInfo.options.imagemagickpath|default('')}) }}
+                                <span>If convert (ImageMagick) is not in your computer PATH, you can choose the imagemagick path using this option.</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h3>Options : Console</h3>
+                           <div>
+                                {% if (detailInfo.options.quiet is defined) and (detailInfo.options.quiet == 1) %}
+                                    {{ form_widget(form.options.quiet, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.quiet) }}
+                                {% endif %}
+                                {{ form_label(form.options.quiet) }}
+                                <span>This flag will make glue suppress all console output.</span>
+                            </div>
+                            <div>
+                                {% if (detailInfo.options.watch is defined) and (detailInfo.options.watch == 1) %}
+                                    {{ form_widget(form.options.watch, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.watch) }}
+                                {% endif %}
+                                {{ form_label(form.options.watch) }}
+                                <span>While you are developing a site it could be quite frustrating running Glue once and another every time you change a source image or a filename. --watch will allow you to keep Glue running in the background and it’ll rebuild the sprite every time it detects changes on the source directory.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.debug is defined) and (detailInfo.options.debug == 1) %}
+                                    {{ form_widget(form.options.debug, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.debug) }}
+                                {% endif %}
+                                {{ form_label(form.options.debug) }}
+                                <span>By default glue catch all unexpected errors and fails gracefully. If you want to look under the hood use --debug and glue will raise some debugging information about the error. If you want to report a bug, please provide a reproducable example as well as the output of the command failing using --debug.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.follow_links is defined) and (detailInfo.options.follow_links == 1) %}
+                                    {{ form_widget(form.options.follow_links, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.follow_links) }}
+                                {% endif %}
+                                {{ form_label(form.options.follow_links) }}
+                                <span>Follow symbolic links.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.no_img is defined) and (detailInfo.options.no_img == 1) %}
+                                    {{ form_widget(form.options.no_img, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.no_img) }}
+                                {% endif %}
+                                {{ form_label(form.options.no_img) }}
+                                <span>Don’t create any sprite image.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.no_css is defined) and (detailInfo.options.no_css == 1) %}
+                                    {{ form_widget(form.options.no_css, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.no_css) }}
+                                {% endif %}
+                                {{ form_label(form.options.no_css) }}
+                                <span>Don’t create any CSS file.</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h3>Options: File output</h3>
+                           <div>
+                                {% if (detailInfo.options.cachebuster is defined) and (detailInfo.options.cachebuster == 1) %}
+                                    {{ form_widget(form.options.cachebuster, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.cachebuster) }}
+                                {% endif %}
+                                {{ form_label(form.options.cachebuster) }}
+                                <span>glue can use this technique to automatically add the hash of the PNG file to the CSS url, so as soon as the file change (add/remove an image) the hash will be different and the browser will re-download the image.</span>
+                            </div>
+                            <div>
+                                {% if (detailInfo.options.cachebuster_filename is defined) and (detailInfo.options.cachebuster_filename == 1) %}
+                                    {{ form_widget(form.options.cachebuster_filename, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.cachebuster_filename) }}
+                                {% endif %}
+                                {{ form_label(form.options.cachebuster_filename) }}
+                                <span>This option has the same purpose than --cachebuster but insted of using the hash of the PNG as a queryarg it uses it as part of the filename.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.less is defined) and (detailInfo.options.less == 1) %}
+                                    {{ form_widget(form.options.less, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.less) }}
+                                {% endif %}
+                                {{ form_label(form.options.less) }}
+                                <span>less is a dynamic stylesheet language that extends CSS with dynamic behaviors. glue can also create .less files adding the --less option. This files contain exactly the same CSS code. This option only changes the file format.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.html is defined) and (detailInfo.options.html == 1) %}
+                                    {{ form_widget(form.options.html, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.html) }}
+                                {% endif %}
+                                {{ form_label(form.options.html) }}
+                                <span>Using the --html option, Glue will also generate a test html per sprite using all the available CSS classes. This option is only useful for testing purposes. Glue generate the html file in the same directory as the CSS file.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.url) }}
+                                {{ form_widget(form.options.url, {value : detailInfo.options.url|default('')}) }}
+                                <span>By default glue adds to the PNG file name the relative url between the CSS and the PNG file. If for any reason you need to change this behaviour, you can use url=<your-static-url-to-the-png-file> and glue will replace its suggested one with your url.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.img) }}
+                                {{ form_widget(form.options.img, {value : detailInfo.options.img|default('')}) }}
+                                <span>Usually both CSS and PNG files reside on different folders, e.g. css and img. If you want to choose an individual folder for each type of file you can use the --img=dir --css=dir options together to customize where the output files will be created.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.css) }}
+                                {{ form_widget(form.options.css, {value : detailInfo.options.css|default('')}) }}
+                                <span>Usually both CSS and PNG files reside on different folders, e.g. css and img. If you want to choose an individual folder for each type of file you can use the --img=dir --css=dir options together to customize where the output files will be created.</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <h3>Options : Sprite and image</h3>
+                           <div>
+                                {% if (detailInfo.options.retina is defined) and (detailInfo.options.retina == 1) %}
+                                    {{ form_widget(form.options.retina, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.retina) }}
+                                {% endif %}
+                                {{ form_label(form.options.retina) }}
+                                <span>The option --retina is only a shortcut for --ratios=2,1.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.ratios) }}
+                                {{ form_widget(form.options.ratios, {value : detailInfo.options.ratios|default('')}) }}
+                                <span>Glue can automatically scale down your sprites to automatically fit them into low-dpi devices. Glue assumes that the source images are the biggests you want to serve, then glue will create one sprite for each ratio you set in this command.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.algorithm) }}
+                                {{ form_widget(form.options.algorithm, {value : detailInfo.options.algorithm|default('')}) }}
+                                <span>The criteria that glue uses to order the images before adding them to the canvas can be tunned. By default the algorithm is square, but in some situations using another ordering like vertical or horizontal could be useful depending on the kind of images you are spriting.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.ordering) }}
+                                {{ form_widget(form.options.ordering, {value : detailInfo.options.ordering|default('')}) }}
+                                <span>Before processing the images using the algorithm glue orders the images. The default ordering is maxside but you can configure it using the --ordering option.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.each_template) }}
+                                {{ form_widget(form.options.each_template, {value : detailInfo.options.each_template|default('')}) }}
+                                <span>If you want to customize the output CSS, you can use this option to tune the output CSS generated for each image. This template is going to be added once per image present in the sprite. Usually you’ll change this template if you want to remove the block size from the output CSS or make any other fine tune.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.global_template) }}
+                                {{ form_widget(form.options.global_template, {value : detailInfo.options.global_template|default('')}) }}
+                                <span>If you want to customize the output CSS you can use this option to tune the global section of the output CSS. This template is going to be only added once per sprite. Usually you’ll not need to change this template.</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.ignore_filename_paddings is defined) and (detailInfo.options.ignore_filename_paddings == 1) %}
+                                    {{ form_widget(form.options.ignore_filename_paddings, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.ignore_filename_paddings) }}
+                                {% endif %}
+                                {{ form_label(form.options.ignore_filename_paddings) }}
+                                <span>glue by default uses the end of each filename to discover if you want to add some padding to that image. If for any reason you want to disable this behavior (e.g. legacy purposes), you can use the --ignore-filename-paddings option to disable it.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.margin) }}
+                                {{ form_widget(form.options.margin, {value : detailInfo.options.margin|default('')}) }}
+                                <span>If you want to spread the images around the sprite but you don’t want to count this space as image width/height (as happens using –padding`), you can use the --margin option followed by the margin you want to add:</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.padding) }}
+                                {{ form_widget(form.options.padding, {value : detailInfo.options.padding|default('')}) }}
+                                <span>If you want to add the same padding around all images you can use the --padding option</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.separator) }}
+                                {{ form_widget(form.options.separator, {value : detailInfo.options.separator|default('')}) }}
+                                <span>glue by default uses - as separator for the CSS class names. If you want to customize this behaviour you can use --separator to specify your own one:</span>
+                            </div>
+                           <div>
+                                {% if (detailInfo.options.crop is defined) and (detailInfo.options.crop == 1) %}
+                                    {{ form_widget(form.options.crop, {'attr':{'checked':'checked'}}) }}
+                                {% else %}
+                                    {{ form_widget(form.options.crop) }}
+                                {% endif %}
+                                {{ form_label(form.options.crop) }}
+                                <span>Usually designers add some unnecessary transparent space around the images because it is easier for them to work with a larger canvas. glue can optimize our sprite by croping all the unnecessary transparent spaces that the original images could have.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.namespace) }}
+                                {{ form_widget(form.options.namespace, {value : detailInfo.options.namespace|default('')}) }}
+                                <span>By default glue adds the namespace sprite to all the generated CSS class names. If you want to use your own namespace you can override the default one using the --namespace option.</span>
+                            </div>
+                           <div>
+                                {{ form_label(form.options.sprite_namespace) }}
+                                {{ form_widget(form.options.sprite_namespace, {value : detailInfo.options.sprite_namespace|default('')}) }}
+                                <span>By default glue adds the sprite’s name as past of the CSS class namespace. If you want to use your own namespace you can override the default one using the --sprite-namespace option.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
+        <input class="btn btn-large btn-primary" type="submit" value="Create sprite" />
+ </form>

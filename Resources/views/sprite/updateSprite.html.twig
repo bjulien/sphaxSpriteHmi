@@ -1,0 +1,7 @@
+{% extends 'SphaxSpriteHmiBundle::layout.html.twig' %}
+
+{% block titleSection %}{% endblock %}
+
+{% block content %}
+    {% include 'SphaxSpriteHmiBundle:sprite:carouselSprite.html.twig' with {'action': 'updateSprite', 'spriteName': detailInfo.name} %}
+{% endblock %}

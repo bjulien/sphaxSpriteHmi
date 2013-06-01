@@ -4,11 +4,10 @@ namespace Sphax\SpriteHmiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sphax\SpriteBundleIhm\Form\SpriteType;
-use Sphax\SpriteBundleIhm\Form\ConfType;
+use Sphax\SpriteHmiBundle\Form\SpriteType;
+use Sphax\SpriteHmiBundle\Form\ConfType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Sphax\SpriteBundle\Exception\DirectoryException;
 
 /**
  * @Route("/sprite")
@@ -22,11 +21,19 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $sprite = $this->container->get('sphax.sprite');
-        $listSprite = $sprite->listSprite();
+        $spriteList = $sprite->getSpriteList();
         //$sprite->createSprite();
         //$sprite->generateSpriteAction();
+
+        $form = $this->createForm(new SpriteType(), $sprite);
         
-        return array('listSprite' => $listSprite);
+        return array('listSprite' => $listSprite,
+            'form' => $form->createView()
+        );
+        
+        return array('spriteList' => $spriteList,
+            'form' => $form->createView()
+        );
     }
     
     /**

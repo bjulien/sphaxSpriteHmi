@@ -9,34 +9,20 @@ class ConfType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('optipng', 'choice',
-                array('choices' => array(1 => 'On', 0 =>'Off'),
-                    'attr' => array('class' => 'radio'),
-                    'expanded' => true,
-            ))
-            ->add('cachebuster','choice',
-                array('choices' => array(1 => 'On', 0 =>'Off'),
-                    'attr' => array('class' => 'radio'),
-                    'expanded' => true,
-            ))
-            ->add('less','choice',
-                array('choices' => array(1 => 'On', 0 =>'Off'),
-                    'attr' => array('class' => 'radio'),
-                    'expanded' => true,
-            ))
-            ->add('namespace', 'text', array('required' => false))
-            ->add('separatorConf', 'text', array('required' => false));
+            ->add('name')
+            ->add('nameBin', 'text', array('required' => false))
+            ->add('sourceSpriteImage')
+            ->add('outputSpriteImage')
+            ->add('options', new OptionsType(), 
+                array('attr' => array('class' =>'options'),
+                      'label_attr' => array('class' => 'label_options'),
+                      'label' => 'Options (optional)'
+                )
+            );
     }
 
     public function getName()
     {
         return 'sphax_spritebundle_conftype';
-    }
-    
-    public function getDefaultOptions(array $options)
-    {
-        return array(
-            'data_class' => 'Sphax\SpriteBundle\Entity\SpriteConf'
-        );
     }
 }

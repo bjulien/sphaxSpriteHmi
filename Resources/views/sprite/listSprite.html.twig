@@ -2,44 +2,26 @@
 
 {% block titleSection %}Gestion des Sprites{% endblock %}
 
-{% block content %}
-    
-	<table>
-		<thead>
-			<th>Sprite name
-			<th>outputCSS
-			<th>sourceSpriteImage
-			<th>Image dir
-			<th>Action 
-		</thead>
-		<tbody>
-			{% for sprite in listSprite %}
-				<tr>
-					<td>
+{% block sidebar %}
+    <ul class="unstyled">
+        <li class="titleList">
+            <strong><i class="icon-picture"></i>Sprite name :</strong>
+        </li>
+        {% for key, sprite in spriteList %}
+        <li>
+            <a href="{{ path('detailSprite', {'spriteName': key}) }}">
+                <span>{{ key }}</span>
+            </a>
 
-					<td>
-						{{ sprite.outputCSS }}
-					<td>
-						{{ sprite.sourceSpriteImage }}
-					<td>
-						{{ sprite.outputSpriteImage }}
-					<td>
-						{{ sprite.options.optipng }}
-						{{ sprite.options.cachebuster }}
-						{{ sprite.options.less }}
-						{{ sprite.options.namespace }}
-						{{ sprite.options.separator }}
-			{% endfor %}
-		</tbody>
-	</table>
-
+            <a class="close" href="{{ path('deleteSprite', {'spriteName': key}) }}">&times;</a>
+        </li>
+        {% else %}
+            <a href="#">No Sprites</a>
+        {% endfor %}
+    </ul>
 {% endblock %}
 
-{% block titleSideBar %}Nouveau Sprite{% endblock %}
-
-{% block sidebar %}
-        <form id="uploadForm" action="{{ path('createSprite') }}" method="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-            <input type="submit" value="Creer un sprite" />
-        </form>
+{% block content %}
+<h2>Create a sprite</h2>
+    {% include 'SphaxSpriteHmiBundle:sprite:carouselSprite.html.twig' with {'action': 'createSprite'} %}
 {% endblock %}

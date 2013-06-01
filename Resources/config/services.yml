@@ -1,4 +1,6 @@
 parameters:
+    upload.class: Sphax\SpriteHmiBundle\Services\UploadService
+    yaml.class: Sphax\SpriteHmiBundle\YamlParser\YamlParser
 
 services:
     twig.extension.image_operation:
@@ -6,8 +8,14 @@ services:
         tags:
             - { name: twig.extension }
         arguments: [@kernel]
+
     twig.extension.get_sprite_conf:
         class: Sphax\SpriteHmiBundle\Twig\Extension\GetSpriteConf
         tags:
             - { name: twig.extension }
         arguments: [@service_container]
+
+    upload:
+        class: %upload.class%
+    yaml.parser:
+        class: %yaml.class%
