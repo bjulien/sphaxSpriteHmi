@@ -23,7 +23,7 @@ class DefaultController extends Controller
     {
         $sprite = $this->container->get('sphax.sprite');
         $spriteList = $sprite->getSpriteList();
-
+                        
         $form = $this->createForm(new ConfType());
         
         return array('spriteList' => $spriteList,
@@ -37,6 +37,7 @@ class DefaultController extends Controller
      */
     public function detailAction($spriteName)
     {
+        $dirOutput = null;
         $sprite = $this->container->get('sphax.sprite');
         $spriteList = $sprite->getSpriteList();
         foreach ($spriteList as $key => $value) {
@@ -50,13 +51,12 @@ class DefaultController extends Controller
         $DirImage = scandir($detailInfo['sourceSpriteImage']);
         $spriteDirImage = array_diff($DirImage, $exclude_list);
 
-        try {
-            $output = scandir($detailInfo['outputSpriteImage']);
-        } catch (\Exception $e) {
-            throw new \Exception("Output Directory doesn't exists");
-        }
-        
         if (!empty($detailInfo['outputSpriteImage'])) {
+            try {
+                $output = scandir($detailInfo['outputSpriteImage']);
+            } catch (\Exception $e) {
+                throw new \Exception("Output Directory doesn't exists");
+            }
             $dirOutput = array_diff($output, $exclude_list);
         }
 
@@ -120,6 +120,7 @@ class DefaultController extends Controller
         }
         
         return array(
+            'spriteList' => $spriteList,
             'detailInfo' => $detailInfo,
             'form' => $form->createView()
         );

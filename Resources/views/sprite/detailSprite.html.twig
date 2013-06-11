@@ -40,6 +40,7 @@
                         <form id="form-upload" method="post" action="{{ path('addImage') }}" enctype="multipart/form-data">
                             <input type="file" multiple=multiple name="imageUpload[]" />
                             <input type="hidden" name="dirImage" value="{{ detailInfo.sourceSpriteImage }}" />
+                            <input type="hidden" name="spriteName" value="{{ detailInfo.name }}" />
                             <input type="submit" class="btn" value="Upload" />
                         </form>
                     </div>
@@ -133,6 +134,6 @@
 {% endblock %}
 
 {% block sidebarDetail %}
-<a href="{{ path('modifSprite', {'spriteName': detailInfo.name}) }}" class="btn btn-primary">Update</a>
+    <a href="{{ path('modifSprite', {'spriteName': detailInfo.name}) }}" class="btn btn-primary">Update</a>
     <a href="{{ path('generateSprite', {'spriteName': detailInfo.name}) }}" class="btn btn-primary">Generate</a>
 {% endblock %}

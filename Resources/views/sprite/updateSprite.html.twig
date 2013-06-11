@@ -5,3 +5,22 @@
 {% block content %}
     {% include 'SphaxSpriteHmiBundle:sprite:carouselSprite.html.twig' with {'action': 'updateSprite', 'spriteName': detailInfo.name} %}
 {% endblock %}
+
+{% block sidebar %}
+    <ul class="unstyled">
+        <li class="titleList">
+            <strong><i class="icon-picture"></i>Sprite name :</strong>
+        </li>
+        {% for key, sprite in spriteList %}
+        <li>
+            <a href="{{ path('detailSprite', {'spriteName': key}) }}">
+                <span>{{ key }}</span>
+            </a>
+
+            <a class="close" href="{{ path('deleteSprite', {'spriteName': key}) }}">&times;</a>
+        </li>
+        {% else %}
+            <a href="#">No Sprites</a>
+        {% endfor %}
+    </ul>
+{% endblock %}

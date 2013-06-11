@@ -38,6 +38,8 @@ label { display:inline-block; width:165px; font-weight: bold }
 .carousel-control { top:32px; height:30px; width:30px; font-size:30px; line-height: 25px; }
 .carousel-control.left { right:65px; left:auto; }
 .span9, .span1 { margin-top: 10px }
+.btn-primary + .btn-primary { margin-top: 10px; }
+
 /*
 * detail
 */ 
